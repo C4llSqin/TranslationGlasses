@@ -23,6 +23,7 @@ sudo usermod -aG docker $USER
 ### Git clone LibreTranslate
 cd ~
 git clone https://github.com/LibreTranslate/LibreTranslate.git
-cd LibreTranslate
 
+### Start LibreTranslate 
+cd LibreTranslate
 docker-compose up -d --build
