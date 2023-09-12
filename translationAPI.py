@@ -4,7 +4,7 @@ import requests
 import json
 
 #TRANSLATE_ENDPOINT = "https://libretranslate.com/translate"
-TRANSLATE_ENDPOINT = "https://localhost:5000/translate"
+TRANSLATE_ENDPOINT = "http://localhost:5000/translate"
 
 def translate(q: str, source: str = "auto", destination: str = "en") -> dict[str, str]:
     data = {
@@ -18,7 +18,7 @@ def translate(q: str, source: str = "auto", destination: str = "en") -> dict[str
 if __name__ == "__main__":
     inputtext = input("Translate Text> ")
     source = input("Source[auto]> ")
-    target = input("Source[en]> ")
+    target = input("Dest[en]> ")
     if source=="": source = "auto"
     if target=="": target = "en"
     print(f"Returned: {translate(inputtext, source, target)}")
