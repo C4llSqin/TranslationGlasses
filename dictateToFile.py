@@ -24,7 +24,8 @@ def speak_to_bytes(callable, verbose: bool = False):
             data = stream.read(CHUNK)
             frames.append(data)
     except: pass
-    
+    print("Stoping...")
+
     stream.stop_stream()
     stream.close()
     audio.terminate()
@@ -35,6 +36,6 @@ def speak_to_bytes(callable, verbose: bool = False):
     return
 
 if __name__ == "__main__":
-    speak_to_bytes(lambda: True, True)
+    #speak_to_bytes(lambda: True, True)
     for phrase in AudioFile("DictationAudioFile.raw"): print(phrase)
 
