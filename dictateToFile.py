@@ -32,7 +32,7 @@ def speak_to_bytes(callable, verbose: bool = False):
 
     f = wave.open("DictationAudioFile.wav", 'wb')
     f.setparams((CHANNELS, 2, 10, len(frames), "NONE", 'not compressed'))
-    f.write(b''.join(frames))
+    f.writeframesraw(b''.join(frames))
     f.close()
     return
 
