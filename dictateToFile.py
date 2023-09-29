@@ -39,7 +39,7 @@ def speak_to_bytes(callable, fp: str = "DictationAudioFile.wav", verbose: bool =
     return
 
 def file_to_string(fp: str = "DictationAudioFile.wav", lang: str = "en", model: str = "ggml-base.bin"):
-    p = subprocess.Popen(["Whisper", "-m", f"~/whisper.cpp/models/{model}", "-l", lang, fp])
+    p = subprocess.Popen(["Whisper", "-m", f"~/whisper.cpp/models/{model}", "-l", lang, fp], stdout=subprocess.PIPE)
     p.wait()
     data = p.communicate()[0].decode
     lines = data.split("\n")
