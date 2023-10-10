@@ -1,24 +1,23 @@
+import subprocess
 import pyaudio
 import wave
-import subprocess
 import re
+from config import Config
+import translationAPI as tapi
+
+config = Config()
 
 FORMAT = pyaudio.paInt16
-
 CHANNELS = 1
 RATE = 16000
 CHUNK = int(RATE / 10)
 
-def speak_to_bytes(callable, fp: str = "DictationAudioFile.wav", verbose: bool = False):
-    if verbose:
-        print("Init Speaking")
-
+def speak_to_file(callable, fp: str = "DictationAudioFile.wav"):
     audio = pyaudio.PyAudio()
 
     stream = audio.open(format=FORMAT, channels=CHANNELS,
             rate=RATE, input=True,
             frames_per_buffer=CHUNK)
-    print("recording...")
     frames = []
 
     try:
@@ -26,8 +25,7 @@ def speak_to_bytes(callable, fp: str = "DictationAudioFile.wav", verbose: bool =
             data = stream.read(CHUNK)
             frames.append(data)
     except: pass
-    print("Stoping...")
-
+    
     stream.stop_stream()
     stream.close()
     audio.terminate()
@@ -38,17 +36,20 @@ def speak_to_bytes(callable, fp: str = "DictationAudioFile.wav", verbose: bool =
     f.close()
     return
 
-def file_to_string(fp: str = "DictationAudioFile.wav", lang: str = "en", model: str = "ggml-base.bin"):
-    p = subprocess.Popen(["Whisper", "-m", f"../whisper.cpp/models/{model}", "-l", lang, fp], stdout=subprocess.PIPE)
-    p.wait()
+
+def file_to_string(fp: str = "DictationAudioFile.wav"):
+    p = subprocess.Popen([config.WHISPER_EXEC, "-m", f"home/translationglasses/whisper.cpp/models/ggml-{config.WHISPER_MODEL}.bin", "-l", config.get_current_language_code(), fp], stdout=subprocess.PIPE)
+    p.wait() # wait for it to finish
     data = p.communicate()[0].decode()
     lines = data.split("\n")
     text = ""
     for line in lines:
         regex = re.match(r"\[..:..:..\.... --> ..:..:..\....]   ", line)
-        if regex is not None: text += line[36:]
+        if regex is not None: text += line[33:]
     return text
 
 if __name__ == "__main__":
-    speak_to_bytes(lambda: True, verbose=True)
-    print(f"Got: {file_to_string()}")
+    speak_to_file(lambda: True)
+    text = file_to_string()
+    neotext = tapi.translate(text, config.get_current_language_code())
+

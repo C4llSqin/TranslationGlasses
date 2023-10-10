@@ -1,0 +1,11 @@
+{
+    "change_language_pin": 18,
+    "listen_pin": 0,
+    "whisper_model": "base",
+    "whisper_exec": "whisper",
+    "languages": [
+        "de",
+        "es",
+        "fr"
+    ]
+}
