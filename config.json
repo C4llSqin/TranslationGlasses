@@ -4,6 +4,7 @@
     "whisper_model": "base",
     "whisper_exec": "whisper",
     "languages": [
+        "en",
         "de",
         "es",
         "fr"

@@ -1,7 +1,7 @@
 import translationAPI as tapi
 import dictateToFile as dtf
 from config import Config
-
+import time
 import RPi.GPIO as GPIO
 import subprocess
 import re
@@ -33,12 +33,15 @@ def change_langauge(pin: int):
         print("Print: We set it to", config.get_current_language_code())
 
 def file_to_string(fp: str = "DictationAudioFile.wav"):
-    p = subprocess.Popen([config.WHISPER_EXEC, "-m", f"../whisper.cpp/models/ggml-{config.WHISPER_MODEL}.bin", "-l", config.get_current_language_code(), fp], stdout=subprocess.PIPE)
+    p = subprocess.Popen([config.WHISPER_EXEC, "-m", f"/home/translationglasses/whisper.cpp/models/ggml-{config.WHISPER_MODEL}.bin", "-l", config.get_current_language_code(), fp], stdout=subprocess.PIPE)
     p.wait() # wait for it to finish
     data = p.communicate()[0].decode()
     lines = data.split("\n")
     text = ""
     for line in lines:
         regex = re.match(r"\[..:..:..\.... --> ..:..:..\....]   ", line)
-        if regex is not None: text += line[33:]
+        if regex is not None: text += line[34:]
     return text
+
+if __name__ == "__main__":
+    while True: time.sleep(1)
