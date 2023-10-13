@@ -11,7 +11,9 @@ config = Config()
 GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(config.LISTEN_PIN, GPIO.IN, GPIO.PUD_DOWN)
+GPIO.add_event_detect(config.LISTEN_PIN, GPIO.BOTH)
 GPIO.setup(config.CHANGE_LANGUGE_PIN, GPIO.IN, GPIO.PUD_DOWN)
+GPIO.add_event_detect(config.LISTEN_PIN, GPIO.BOTH)
 
 get_state = lambda pin: not(GPIO.input(pin))
 is_listening = False
