@@ -1,10 +1,21 @@
 import json
 import threading
 
-def run_in_new_thread(f, *args, **kwargs):
-    thread = threading.Thread(target=f, args=args, kwargs=kwargs, daemon=True)
-    thread.start()
-    return thread
+class task():
+    def __init__(self, f, *args, **kwargs) -> None:
+        nargs = (f,) + args
+        self.thread = threading.Thread(target=self._run, args=nargs, kwargs=kwargs)
+        self.value = None
+        self.finished = False
+    
+    def start(self):
+        self.thread.start()
+
+    
+    def _run(self, f, *args, **kwargs):
+        self.value = f(*args, **kwargs)
+        self.finished = True
+    
 
 class Config():
     def __init__(self, fp: str = "config.json") -> None:
@@ -15,8 +26,9 @@ class Config():
         self.WHISPER_EXEC: str = data["whisper_exec"]
         self.LANGUAGES: list[str] = data["languages"] 
         self.index = 0
-        self.change_language_callback = lambda langcode: print(f"CONFING: SET {langcode}")
+        self.change_language_callback = lambda langcode: print(f"CONFIG: SET {langcode}")
         self.listen_callback = lambda state: None
+        self.listen_state = 1
     
     def get_current_language_code(self) -> str: return self.LANGUAGES[self.index]
 
@@ -45,3 +57,9 @@ class Config():
     def register_listen_callback(self, f):
         self.listen_callback = f
         return
+    
+    def increase_listen_state(self):
+        self.listen_state += 1
+        if self.listen_state == 3:
+            self.listen_callback(self.listen_state)
+        if self.listen_state == 4: self.listen_state = 0
