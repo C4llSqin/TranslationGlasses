@@ -11,7 +11,6 @@ class task():
     def start(self):
         self.thread.start()
 
-    
     def _run(self, f, *args, **kwargs):
         self.value = f(*args, **kwargs)
         self.finished = True

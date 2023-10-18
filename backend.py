@@ -56,6 +56,6 @@ def run_dictate_task():
     current_task = task(dictate_and_translate)
     current_task.start()
 
-config.register_listen_callback(listen_task)
+config.register_listen_callback(run_dictate_task)
 if __name__ == "__main__":
     while True: time.sleep(1)
