@@ -51,5 +51,6 @@ def file_to_string(fp: str = "DictationAudioFile.wav"):
 if __name__ == "__main__":
     speak_to_file(lambda: True)
     text = file_to_string()
+    print(text)
     neotext = tapi.translate(text, config.get_current_language_code())
-
+    print(neotext)

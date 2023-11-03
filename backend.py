@@ -62,8 +62,8 @@ def speak_to_file(callable, fp: str = "DictationAudioFile.wav"):
     f.close()
     return
 
-def file_to_string(fp: str = "DictationAudioFile.wav"):
-    p = subprocess.Popen([config.WHISPER_EXEC, "-m", f"/home/translationglasses/whisper.cpp/models/ggml-{config.WHISPER_MODEL}.bin", "-l", config.get_current_language_code(), fp], stdout=subprocess.PIPE)
+def file_to_string(model: str, exec_fp: str, lang: str, fp: str = "DictationAudioFile.wav"):
+    p = subprocess.Popen([exec_fp, "-m", f"/home/translationglasses/whisper.cpp/models/ggml-{model}.bin", "-l", lang, fp], stdout=subprocess.PIPE)
     p.wait() # wait for it to finish
     data = p.communicate()[0].decode()
     lines = data.split("\n")
@@ -76,6 +76,13 @@ def file_to_string(fp: str = "DictationAudioFile.wav"):
 def translate(q: str, source: str = "auto", destination: str = "en") -> dict[str, str]:
     translator = googletrans.Translator()
     return translator.translate(q, destination, source).text
+
+def get_ip() -> str:
+    term_out = subprocess.check_output(["ifconfig"]).decode()
+    wlan_section = term_out[term_out.find("wlan0:"):]
+    ip_section = wlan_section[wlan_section.find("inet "):]
+    address = ip_section[5:ip_section[5:].find(" ")+5]
+    return address
 
 #def dictate_and_translate():
 #    dtf.speak_to_file(lambda: config.listen_state == 3)

@@ -1,5 +1,6 @@
 import json
 from os.path import exists
+import time
 #import threading
 
 #class task():
@@ -46,11 +47,16 @@ class Config():
         self.FONT_SIZE: int = data["font_size"]
         self.LINE_WAIT_TIME: int = data["line_wait_time"] 
         self.index = 0
-        self.change_language_callback = lambda langcode: print(f"CONFIG: SET {langcode}")
-        self.listen_callback = lambda state: None
+        self.change_language_callback = lambda langcode: print(f"CONFIG: SET LANG {langcode}")
+        self.listen_callback = lambda state: print(f"CONFIG: SET LISTEN {state}")
         self.listen_state = 1
+        self.button_cooldown = 0
     
     def get_current_language_code(self) -> str: return self.LANGUAGES[self.index]
+    
+    def add_button_cooldown(self): self.button_cooldown = time.time() + 0.1
+
+    def is_on_cooldown(self) -> bool: return time.time() < self.button_cooldown
 
     def set_index(self, index: int): 
         self.index = index

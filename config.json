@@ -1,15 +1,15 @@
 {
-    "change_language_pin": 18,
-    "listen_pin": 0,
-    "whisper_model": "base",
+    "change_language_pin": 40,
+    "listen_pin": 38,
+    "whisper_model": "tiny",
     "whisper_exec": "whisper",
     "languages": [
         "en",
-        "de",
         "es",
-        "fr"
+        "fr",
+        "de"
     ],
-    "font": "font",
+    "font": "FreePixel.ttf",
     "font_size": 16,
     "line_wait_time": 10
 }
