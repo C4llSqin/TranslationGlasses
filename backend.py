@@ -1,6 +1,6 @@
 import translationAPI as tapi
 import dictateToFile as dtf
-from config import Config, task
+from config import Config
 import time
 import RPi.GPIO as GPIO
 import subprocess
@@ -52,9 +52,7 @@ def dictate_and_translate():
     return translated_text
 
 def run_dictate_task():
-    global current_task
-    current_task = task(dictate_and_translate)
-    current_task.start()
+    ...
 
 config.register_listen_callback(run_dictate_task)
 if __name__ == "__main__":
