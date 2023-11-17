@@ -16,9 +16,7 @@ def make_term() -> terminal:
 
 def reset_display(term: terminal):
     term.clear()
-    term._cx = term.width-2
-    term.puts(backend.config.get_current_language_code())
-    term._cx, term._cy = (0, 1)
+    term.puts(f"{backend.config.get_current_language_code():>term.width-2}")
     term.flush()
 
 def dictate_and_translate(term: terminal):
