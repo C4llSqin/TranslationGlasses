@@ -1,29 +1,50 @@
 import json
-import threading
+from os.path import exists
+#import threading
 
-class task():
-    def __init__(self, f, *args, **kwargs) -> None:
-        nargs = (f,) + args
-        self.thread = threading.Thread(target=self._run, args=nargs, kwargs=kwargs)
-        self.value = None
-        self.finished = False
-    
-    def start(self):
-        self.thread.start()
-
-    def _run(self, f, *args, **kwargs):
-        self.value = f(*args, **kwargs)
-        self.finished = True
+#class task():
+#    def __init__(self, f, *args, **kwargs) -> None:
+#        nargs = (f,) + args
+#        self.thread = threading.Thread(target=self._run, args=nargs, kwargs=kwargs)
+#        self.value = None
+#        self.finished = False
+#    
+#    def start(self):
+#        self.thread.start()
+#
+#    def _run(self, f, *args, **kwargs):
+#        self.value = f(*args, **kwargs)
+#        self.finished = True
     
 
 class Config():
     def __init__(self, fp: str = "config.json") -> None:
+        if not exists(fp):
+            with open(fp, 'w') as f:
+                json.dump({
+                    "change_language_pin": 38,
+                    "listen_pin": 40,
+                    "whisper_model": "tiny",
+                    "whisper_exec": "whisper",
+                    "languages": [
+                        "en",
+                        "de",
+                        "es",
+                        "fr"
+                    ],
+                    "font": "font",
+                    "font_size": 16,
+                    "line_wait_time": 10 # TODO; timings
+                }, f)
         with open(fp) as f: data = json.load(f)
         self.CHANGE_LANGUGE_PIN: int = data["change_language_pin"]
         self.LISTEN_PIN: int = data["listen_pin"]
         self.WHISPER_MODEL: str = data["whisper_model"]
         self.WHISPER_EXEC: str = data["whisper_exec"]
-        self.LANGUAGES: list[str] = data["languages"] 
+        self.LANGUAGES: list[str] = data["languages"]
+        self.FONT: str = data["font"]
+        self.FONT_SIZE: int = data["font_size"]
+        self.LINE_WAIT_TIME: int = data["line_wait_time"] 
         self.index = 0
         self.change_language_callback = lambda langcode: print(f"CONFIG: SET {langcode}")
         self.listen_callback = lambda state: None

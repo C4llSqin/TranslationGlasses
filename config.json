@@ -8,5 +8,8 @@
         "de",
         "es",
         "fr"
-    ]
+    ],
+    "font": "font",
+    "font_size": 16,
+    "line_wait_time": 10
 }
